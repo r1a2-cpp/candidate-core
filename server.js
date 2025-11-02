@@ -28,14 +28,14 @@ const CandidateSchema = new mongoose.Schema({
   policeClearanceInfo: { type: Boolean, default: false },
 
   mofaInfo: {
-    status: { type: String, enum: ['PENDING', 'DONE', 'MEDUPDATE'], default: 'PENDING' },
+    status: { type: String, enum: ['','PENDING', 'DONE', 'MEDUPDATE'], default: '' },
     date: { type: Date },
     rlNumber: { type: Number },
     applicationNumber: { type: Number },
   },
 
   fingerInfo: {
-    status: { type: String, enum: ['PENDING', 'DONE'], default: 'PENDING' },
+    status: { type: String, enum: ['','PENDING', 'DONE'], default: '' },
     date: { type: Date },
   },
 
@@ -44,23 +44,23 @@ const CandidateSchema = new mongoose.Schema({
     visaType: { type: String },
     issueDate: { type: Date },
     expiryDate: { type: Date },
-    visaStatus: { type: String, enum: ['PENDING', 'ISSUED', 'SOLD', 'EXPIRED'], default: 'PENDING' },
+    visaStatus: { type: String, enum: ['','PENDING', 'ISSUED', 'SOLD', 'EXPIRED'], default: '' },
   },
 
   manpowerInfo: {
-    bmetTrainingStatus: { type: String, enum: ['PENDING', 'COMPLETED'], default: 'PENDING' },
-    manpowerStatus: { type: String, enum: ['PENDING', 'DONE'], default: 'PENDING' },
+    bmetTrainingStatus: { type: String, enum: ['','PENDING', 'COMPLETED'], default: '' },
+    manpowerStatus: { type: String, enum: ['','PENDING', 'DONE'], default: '' },
   },
 
   flightInfo: {
     flightDate: { type: Date },
-    flightStatus: { type: String, enum: ['PENDING', 'DONE'], default: 'PENDING' },
+    flightStatus: { type: String, enum: ['','PENDING', 'DONE'], default: '' },
   },
 
   iqamaInfo: {
     iqamaNumber: { type: Number },
     issueDate: { type: Date },
-    iqamaStatus: { type: String, enum: ['PENDING', 'DONE'], default: 'PENDING' },
+    iqamaStatus: { type: String, enum: ['','PENDING', 'DONE'], default: '' },
   },
 
   // Documents
