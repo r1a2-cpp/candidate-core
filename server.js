@@ -73,7 +73,7 @@ const CandidateSchema = new mongoose.Schema({
     enum: ['JUST RECEIVED', 'MEDICAL', 'VISA', 'MANPOWER', 'FLIGHT', 'IQAMAH', 'ON HOLD'],
     default: 'JUST RECEIVED',
   },
-  receivedDate: { type: Date, default: Date.now },
+  receivedDate: { type: Date },
 
   overallStatus: {
     type: String,
