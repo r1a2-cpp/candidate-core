@@ -112,6 +112,23 @@ app.get('/api/office-data', async (req, res) => {
 app.get('/', (req, res) => {
   res.send('Candidate Core API is running 🚀');
 });
+//---------------------------------
+app.post("/api/upload", async (req, res) => {
+  try {
+    const data = req.body;
+
+    if (!Array.isArray(data)) {
+      return res.status(400).json({ message: "Data must be an array of objects" });
+    }
+
+    await Candidate.insertMany(data, { ordered: false });
+    res.status(200).json({ message: "Bulk upload successful", count: data.length });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+});
+//---------------------------------
 
 // === Server Start ===
 const PORT = process.env.PORT || 3000;
