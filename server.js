@@ -12,75 +12,114 @@ app.use(cors());
 app.use(express.json());
 
 // === Candidate Schema ===
-const CandidateSchema = new mongoose.Schema({
-  // Primary Information
-  SL: { type: Number, required: true, unique: true },
-  fullName: { type: String, required: true, trim: true },
-  passportNumber: { type: String, required: true, unique: true, trim: true },
-  agentName: { type: String, required: true, trim: true },
+const CandidateSchema = new mongoose.Schema(
+  {
+    // 🟩 Primary Information
+    sl: { type: Number, required: true, unique: true },
+    fullName: { type: String, required: true, trim: true },
+    passportNumber: { type: String, required: true, unique: true, trim: true },
+    agentName: { type: String, default: "", trim: true },
 
-  // Progress Information
-  medicalInfo: {
-    status: { type: String, enum: ['PENDING', 'FIT', 'UNFIT', 'EXP'], default: 'PENDING' },
-    date: { type: Date },
+    // 🟨 Progress Information (future fields — safe defaults)
+    medicalInfo: {
+      status: {
+        type: String,
+        enum: ["PENDING", "FIT", "UNFIT", "EXP"],
+        default: "PENDING",
+      },
+      date: { type: Date, default: null },
+    },
+
+    policeClearanceInfo: { type: Boolean, default: false },
+
+    mofaInfo: {
+      status: {
+        type: String,
+        enum: ["", "PENDING", "DONE", "MEDUPDATE"],
+        default: "",
+      },
+      date: { type: Date, default: null },
+      rlNumber: { type: Number, default: null },
+      applicationNumber: { type: Number, default: null },
+    },
+
+    fingerInfo: {
+      status: { type: String, enum: ["", "PENDING", "DONE"], default: "" },
+      date: { type: Date, default: null },
+    },
+
+    visaInfo: {
+      visaNo: { type: Number, default: null },
+      visaType: { type: String, default: "" },
+      issueDate: { type: Date, default: null },
+      expiryDate: { type: Date, default: null },
+      visaStatus: {
+        type: String,
+        enum: ["", "PENDING", "ISSUED", "SOLD", "EXPIRED"],
+        default: "",
+      },
+    },
+
+    manpowerInfo: {
+      bmetTrainingStatus: {
+        type: String,
+        enum: ["", "PENDING", "COMPLETED"],
+        default: "",
+      },
+      manpowerStatus: {
+        type: String,
+        enum: ["", "PENDING", "DONE"],
+        default: "",
+      },
+    },
+
+    flightInfo: {
+      flightDate: { type: Date, default: null },
+      flightStatus: {
+        type: String,
+        enum: ["", "PENDING", "DONE"],
+        default: "",
+      },
+    },
+
+    iqamaInfo: {
+      iqamaNumber: { type: Number, default: null },
+      issueDate: { type: Date, default: null },
+      iqamaStatus: {
+        type: String,
+        enum: ["", "PENDING", "DONE"],
+        default: "",
+      },
+    },
+
+    // 🟦 Documents
+    passportCopy: { type: String, default: "" },
+    visaCopy: { type: String, default: "" },
+
+    // 🟥 Status
+    status: {
+      type: String,
+      enum: [
+        "JUST RECEIVED",
+        "MEDICAL",
+        "VISA",
+        "MANPOWER",
+        "FLIGHT",
+        "IQAMAH",
+        "ON HOLD",
+      ],
+      default: "JUST RECEIVED",
+    },
+    receivedDate: { type: Date, default: null },
+
+    overallStatus: {
+      type: String,
+      enum: ["IN-PROGRESS", "DONE", "BACK", "CANCEL"],
+      default: "IN-PROGRESS",
+    },
   },
-
-  policeClearanceInfo: { type: Boolean, default: false },
-
-  mofaInfo: {
-    status: { type: String, enum: ['','PENDING', 'DONE', 'MEDUPDATE'], default: '' },
-    date: { type: Date },
-    rlNumber: { type: Number },
-    applicationNumber: { type: Number },
-  },
-
-  fingerInfo: {
-    status: { type: String, enum: ['','PENDING', 'DONE'], default: '' },
-    date: { type: Date },
-  },
-
-  visaInfo: {
-    visaNo: { type: Number },
-    visaType: { type: String },
-    issueDate: { type: Date },
-    expiryDate: { type: Date },
-    visaStatus: { type: String, enum: ['','PENDING', 'ISSUED', 'SOLD', 'EXPIRED'], default: '' },
-  },
-
-  manpowerInfo: {
-    bmetTrainingStatus: { type: String, enum: ['','PENDING', 'COMPLETED'], default: '' },
-    manpowerStatus: { type: String, enum: ['','PENDING', 'DONE'], default: '' },
-  },
-
-  flightInfo: {
-    flightDate: { type: Date },
-    flightStatus: { type: String, enum: ['','PENDING', 'DONE'], default: '' },
-  },
-
-  iqamaInfo: {
-    iqamaNumber: { type: Number },
-    issueDate: { type: Date },
-    iqamaStatus: { type: String, enum: ['','PENDING', 'DONE'], default: '' },
-  },
-
-  // Documents
-  passportCopy: { type: String, default: '' },
-  visaCopy: { type: String, default: '' },
-
-  // Status
-  status: {
-    type: String,
-    enum: ['JUST RECEIVED', 'MEDICAL', 'VISA', 'MANPOWER', 'FLIGHT', 'IQAMAH', 'ON HOLD'],
-    default: 'JUST RECEIVED',
-  },
-  receivedDate: { type: Date },
-
-  overallStatus: {
-    type: String,
-    enum: ['IN-PROGRESS', 'DONE', 'BACK', 'CANCEL'],
-    default: 'IN-PROGRESS',
-  },
-}, { timestamps: true });
+  { timestamps: true }
+);
 
 // === Model ===
 const Candidate = mongoose.model('Candidate', CandidateSchema);
